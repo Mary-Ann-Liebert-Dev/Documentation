@@ -19,6 +19,11 @@ GEN and IPM are both composed of no less than 13 repo's each, and growing. This 
 
 Sites are currently hosted on a managed WordPress Engine account. Local by Flywheel is used for Local development. We are actively looking to replace the development environment, looking at MAMP as a primary candidate.
 
+## Code Build and Deploy
+
+We use a GitHub actions based CI/CD process where code is built to the server on code push or pull, depending on branch rules. This process is defined in `.yml` files on a per branch bases in `./github/workflows` for any given repo which requires a code build. In general, pushing to the staging branch will trigger a build, but prod requires a staging -> main PR. More on Github actions here:  
+https://docs.github.com/en/actions
+
 ## Recovery  
 
 Recovery can be accomplished via the dev@liebertpub.com address which is the owner seat for the Mary Ann Liebert GitHub Account here:  
