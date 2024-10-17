@@ -40,12 +40,12 @@ Problems with the initial migration of the site, overreliance on Third party plu
 
 Currently the hierarchy is laid out as follows. Each subrepo has its own readme (where applicable). More info on each subrepo can be found in the theme .gitmodule file.
 
-Child theme: genengnews(GEN) / clinicalomics(IPM):
-|+ GetAuthors: retrieves and outputs author information  
-|+ HubspotForms: renders hubspot forms  
+Child theme: genengnews(GEN) / clinicalomics10 (IPM):  
+|+ GetAuthors: retrieves and outputs author information    
+|+ HubspotForms: renders hubspot forms    
 |+ Image_Backup: prevents rendering broken images by creating the requested image size from a source file if present, and using a fallback if not  
 |+ MalEnv: Sets up constants from the .env file. This allows for default in constant values, and failing gracefully if the .env is incomplete  
-|+ MalHooks: Hooks into various post save actions to send API calls to external services maintaining data sync's. Currently interfaces with Hubspot and Portable Profile servers
+|+ MalHooks: Hooks into various post save actions to send API calls to external services maintaining data sync's. Currently interfaces with Hubspot and Portable Profile servers  
 |+ MalPostman: Abstracted CURL handler classes to interface with external API endpoints  
 |+ PPWidget: Renders the in-page portable profile widget and scripts  
 |+ Straive: Retrieves and renders the straive data into the page. Includes a custom DB handler which is extremely important for performance optimization  
@@ -82,7 +82,7 @@ To get all the most recent included submodule packages. Then do the same to `./p
 ### - Install Composer
 
 Composer is used extensively in this theme. You must run the install process in all relevant locations or the theme will not work. From the root `./wp-content` directory these locations are: 
- - `/themes/[theme_name]` (your active theme directory, either genengnews or clinicalomics)  
+ - `/themes/[theme_name]` (your active theme directory, either genengnews or clinicalomics10)  
  - `/themes/[theme_name]/MalAdsManager/googleads-php-lib`  
  - `/plugins/mal-data-migrator`  
 
@@ -109,6 +109,12 @@ To watch your theme files and automatically regenerate the build CSS on changes.
 https://tailwindcss.com/
 
 ### IF All went well, you should now have a working MAL Wordpress site!!!
+
+### Activate
+
+Make sure that
+- all the Newspaper plugins that you installed are activated
+- the correct child theme is activated in Appearance -> Themes from the admin menu
 
 ### Other services
 
