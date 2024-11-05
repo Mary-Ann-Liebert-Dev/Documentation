@@ -108,6 +108,12 @@ To watch your theme files and automatically regenerate the build CSS on changes.
 
 https://tailwindcss.com/
 
+## Run Webpack 
+
+This creates a bundle js which some features depend on. Should only need to be done once on any given website. From the theme root:
+
+`npx webpack --config webpack.config.js`
+
 ### IF All went well, you should now have a working MAL Wordpress site!!!
 
 ### Activate
