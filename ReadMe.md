@@ -17,7 +17,7 @@ GEN and IPM are both composed of no less than 13 repo's each, and growing. This 
 
 ## Hosting
 
-Sites are currently hosted on a managed WordPress Engine account. Local by Flywheel is used for Local development. We are actively looking to replace the development environment, looking at MAMP as a primary candidate.
+Sites are currently hosted on a managed WordPress Engine account. Local by Flywheel is used for Local development. Local works much faster on a Mac, than on a PC, and ideally should be run on an Apple Silicone, M1 or better.
 
 ## Code Build and Deploy
 
@@ -30,7 +30,7 @@ Recovery can be accomplished via the dev@liebertpub.com address which is the own
 
 https://github.com/Mary-Ann-Liebert-Dev
 
-This contains all 31 repo's which currently constitute our codebase, about 2/3 of which are in active use.
+This contains all 58 repo's which currently constitute our codebase, about 3/4 of which are in active use.
 
 ## Performance
 
@@ -44,15 +44,26 @@ Child theme: genengnews(GEN) / clinicalomics10 (IPM):
 |+ GetAuthors: retrieves and outputs author information    
 |+ HubspotForms: renders hubspot forms    
 |+ Image_Backup: prevents rendering broken images by creating the requested image size from a source file if present, and using a fallback if not  
-|+ MalEnv: Sets up constants from the .env file. This allows for default in constant values, and failing gracefully if the .env is incomplete  
+|+ MalEnv: Sets up constants from the .env file. This allows for default in constant values, and failing gracefully if the .env is incomplete. Some of the ENV files need to be consumed via JS and these are rendered into the head.  
 |+ MalHooks: Hooks into various post save actions to send API calls to external services maintaining data sync's. Currently interfaces with Hubspot and Portable Profile servers  
 |+ MalPostman: Abstracted CURL handler classes to interface with external API endpoints  
-|+ PPWidget: Renders the in-page portable profile widget and scripts  
+// |+ PPWidget: Renders the in-page portable profile widget and scripts **This project is canceled and code deprecated**  
 |+ Straive: Retrieves and renders the straive data into the page. Includes a custom DB handler which is extremely important for performance optimization  
-|+ StraiveForm: Renders and controls Straive's tagging interface
+|+ StraiveForm: Renders and controls Straive's tagging interface.  
+|+ MalAdsManager: GoogleAdsManager package for controlling the in-page ads. Creates an admin interface with a control panel for each slot.  
+|+ MalSearch: Bootstrap for a search refactor. Currently only adding pagination.  
+|+ CategoryConfirmation: Time-of-Save sanitization for logically oriented category confirmation
+|+ GlobalQuery: Handles Section Queries for the new Gutenberg based homepage  
+|+ GetDynamicLink: Get the Yoast Primary Category based link for a given post, using the WP derived link as a fallback
+|+ SidebarController: Controls when and how the sidebar should display. **Recommended to use this package to hook into the ads package to determine whether an ad has been hidden for that page or category, and mute it accordingly so it doesn't leave space in the layout**  
+
+
+
+There are two Gutenberg blocks directories, `./includes/blocks` and `./includes/g2Blocks`. Each of the blocks is also a subRepo, with the exception of `./blocks/webinars-info`. More on the Gutenberg Blocks environment later.
 
 Plugins: All plugins for the theme with the exception of TagDiv:  
-|+ mal-data-migrator: Utility classes for handling migrations and data cleanses. Exposes endpoints via WP REST API, and also has an admin interface which is deprecated due to WPE issues. Currently its run via a desktop handler, which I wrote in python. Repo for that is here: git@github.com:Mary-Ann-Liebert-Dev/PythonDataConsole.git
+|+ mal-error-handler: Provides granular error handling to mute overly verbose error logs.
+|+ mal-data-migrator: Utility classes for handling migrations and data cleanses. Exposes endpoints via WP REST API, and also has an admin interface which is deprecated due to WPE issues. Currently its run via a desktop handler, which I wrote in python. Repo for that is here: git@github.com:Mary-Ann-Liebert-Dev/PythonDataConsole.git. This plugin also provides the `\mal_logger()` function, so it may cause a critical error if deactivated.
 
 ## Installation
 
@@ -85,6 +96,9 @@ Composer is used extensively in this theme. You must run the install process in 
  - `/themes/[theme_name]` (your active theme directory, either genengnews or clinicalomics10)  
  - `/themes/[theme_name]/MalAdsManager/googleads-php-lib`  
  - `/plugins/mal-data-migrator`  
+
+### - Variables
+There is a `/keys` directory and a `.env` file both in the theme root. These will come down with the .zip download, but just confirm they are there. You can always ssh into the server and retrive them from there. Remember to change 'Prod' to 'Dev' or 'Local' as required. Check the MalEnv package and trace the vars to find the parameters of each.
 
 In a ***POWERSHELL*** (WIN) terminal navigate to each of the above directories and run  
  `composer install`
@@ -121,6 +135,16 @@ This creates a bundle js which some features depend on. Should only need to be d
 Make sure that
 - all the Newspaper plugins that you installed are activated
 - the correct child theme is activated in Appearance -> Themes from the admin menu
+
+### Deploy
+
+Builds are handled via GitHub Actions. The builds are controlled via SSH validated YAML files in `./.github/workflows`. Pushing to the following branches:
+
+- dev: `Development`
+- staging: `Staging`
+- main: `Production`
+
+Will trigger builds to the corresponding WP Engine server. 
 
 ### Other services
 
